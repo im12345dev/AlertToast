@@ -27,6 +27,18 @@ public struct BlurView: NSViewRepresentable {
         nsView.blendingMode = .withinWindow
     }
 }
+#elseif os(tvOS)
+public struct BlurView: UIViewRepresentable {
+    public typealias UIViewType = UIVisualEffectView
+    
+    public func makeUIView(context: Context) -> UIVisualEffectView {
+        return UIVisualEffectView(effect: UIBlurEffect(style: .dark))
+    }
+    
+    public func updateUIView(_ uiView: UIVisualEffectView, context: Context) {
+        uiView.effect = UIBlurEffect(style: .dark)
+    }
+}
 
 #else
 
