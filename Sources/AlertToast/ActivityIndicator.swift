@@ -8,7 +8,7 @@
 import SwiftUI
 
 #if os(macOS)
-@available(macOS 11, *)
+@available(iOS 14, tvOS 14, *)
 struct ActivityIndicator: NSViewRepresentable {
 
     let color: Color
@@ -27,7 +27,7 @@ struct ActivityIndicator: NSViewRepresentable {
     }
 }
 #else
-@available(iOS 14, *)
+@available(iOS 14, tvOS 14, *)
 struct ActivityIndicator: UIViewRepresentable {
 
     let color: Color

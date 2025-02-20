@@ -28,6 +28,7 @@ public struct BlurView: NSViewRepresentable {
     }
 }
 #elseif os(tvOS)
+@available(tvOS 14, *)
 public struct BlurView: UIViewRepresentable {
     public typealias UIViewType = UIVisualEffectView
     
