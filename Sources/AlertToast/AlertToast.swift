@@ -11,7 +11,7 @@
 import SwiftUI
 import Combine
 
-@available(iOS 14, macOS 11, tvOS 14, *)
+@available(iOS 14, macOS 11, tvOS 16, *)
 fileprivate struct AnimatedCheckmark: View {
     
     ///Checkmark color
@@ -46,7 +46,7 @@ fileprivate struct AnimatedCheckmark: View {
     }
 }
 
-@available(iOS 14, macOS 11, tvOS 14, *)
+@available(iOS 14, macOS 11, tvOS 16, *)
 fileprivate struct AnimatedXmark: View {
     
     ///xmark color
@@ -88,7 +88,7 @@ fileprivate struct AnimatedXmark: View {
 
 //MARK: - Main View
 
-@available(iOS 14, macOS 11, tvOS 14, *)
+@available(iOS 14, macOS 11, tvOS 16, *)
 public struct AlertToast: View{
     
     public enum BannerAnimation{
@@ -407,7 +407,7 @@ public struct AlertToast: View{
     }
 }
 
-@available(iOS 14, macOS 11, tvOS 14, *)
+@available(iOS 14, macOS 11, tvOS 16, *)
 public struct AlertToastModifier: ViewModifier{
     
     ///Presentation `Binding<Bool>`
@@ -468,6 +468,7 @@ public struct AlertToastModifier: ViewModifier{
                     .transition(AnyTransition.scale(scale: 0.8).combined(with: .opacity))
             case .hud:
                 alert()
+                #if os(iOS) || os(macOS)
                     .overlay(
                         GeometryReader{ geo -> AnyView in
                             let rect = geo.frame(in: .global)
@@ -482,6 +483,7 @@ public struct AlertToastModifier: ViewModifier{
                             return AnyView(EmptyView())
                         }
                     )
+                #endif
                     .onTapGesture {
                         onTap?()
                         if tapToDismiss{
@@ -604,7 +606,7 @@ public struct AlertToastModifier: ViewModifier{
 }
 
 ///Fileprivate View Modifier for dynamic frame when alert type is `.regular` / `.loading`
-@available(iOS 14, macOS 11, tvOS 14, *)
+@available(iOS 14, macOS 11, tvOS 16, *)
 fileprivate struct WithFrameModifier: ViewModifier{
     
     var withFrame: Bool
@@ -624,7 +626,7 @@ fileprivate struct WithFrameModifier: ViewModifier{
 }
 
 ///Fileprivate View Modifier to change the alert background
-@available(iOS 14, macOS 11, tvOS 14, *)
+@available(iOS 14, macOS 11, tvOS 16, *)
 fileprivate struct BackgroundModifier: ViewModifier{
     
     var color: Color?
@@ -642,7 +644,7 @@ fileprivate struct BackgroundModifier: ViewModifier{
 }
 
 ///Fileprivate View Modifier to change the text colors
-@available(iOS 14, macOS 11, tvOS 14, *)
+@available(iOS 14, macOS 11, tvOS 16, *)
 fileprivate struct TextForegroundModifier: ViewModifier{
     
     var color: Color?
@@ -658,7 +660,7 @@ fileprivate struct TextForegroundModifier: ViewModifier{
     }
 }
 
-@available(iOS 14, macOS 11, tvOS 14, *)
+@available(iOS 14, macOS 11, tvOS 16, *)
 fileprivate extension Image{
     
     func hudModifier() -> some View{
@@ -671,6 +673,7 @@ fileprivate extension Image{
 }
 
 //@available(iOS 14, macOS 11, *)
+@available(iOS 14, macOS 11, tvOS 16, *)
 public extension View{
     
     /// Return some view w/o frame depends on the condition.
@@ -695,6 +698,7 @@ public extension View{
     ///   - item: Binding<Item?>
     ///   - alert: (Item?) -> AlertToast
     /// - Returns: `AlertToast`
+    @available(iOS 14, macOS 11, tvOS 16, *)
     func toast<Item>(item: Binding<Item?>, duration: Double = 2, tapToDismiss: Bool = true, offsetY: CGFloat = 0, alert: @escaping (Item?) -> AlertToast, onTap: (() -> ())? = nil, completion: (() -> ())? = nil) -> some View where Item : Identifiable {
         modifier(
             AlertToastModifier(
@@ -734,7 +738,7 @@ public extension View{
     }
     
     @ViewBuilder fileprivate func valueChanged<T: Equatable>(value: T, onChange: @escaping (T) -> Void) -> some View {
-        if #available(iOS 14.0, tvOS 14, *) {
+        if #available(iOS 14.0, tvOS 16, *) {
             self.onChange(of: value, perform: onChange)
         } else {
             self.onReceive(Just(value)) { (value) in
